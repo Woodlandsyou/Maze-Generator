@@ -6,6 +6,7 @@ function setup() {
     createCanvas(_width, _height);
     grid = createGrid(cols, rows);
     current = grid[0][0];
+    current.visited = true;
 }
 
 function draw() {
@@ -27,7 +28,7 @@ class Cell {
     display() {
         push();
         if(this.visited) fill(50, 153, 204);
-        if(current === this) fill(150, 0, 255);
+        if(current === this) fill('rgba(150, 0, 255, 0.5)');
         noStroke();
         rect(this.x, this.y, s);
         pop();
@@ -67,13 +68,12 @@ function createGrid(cols, rows) {
 function chooseNeighbour() {
     const r = Math.floor(Math.random() * current.neighbours.length);
     const next = current.neighbours[r];
-    removeWalls(current, next);
-    next.visited = true;
-    
+    removeWalls(current, next, r);
+    current = next;
     return r;
 }
 
-function removeWalls(current, next) {
+function removeWalls(current, next, r) {
     current.walls[r] = false;
     switch (r) {
         case 0:
@@ -83,7 +83,9 @@ function removeWalls(current, next) {
             next.walls[2] = false;
             break;
         case 2:
-            next.walls[3] = false;
+            next.walls[1] = false;
             break;
+        case 3:
+            next.walls[0] = false;
     }
 }
