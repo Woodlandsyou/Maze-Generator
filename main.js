@@ -33,25 +33,23 @@ class Cell {
         pop();
 
         // TOP
-        this.line(this.x, this.y, this.x + s, this.y, this.walls[0]);
+        if(this.walls[0]) line(this.x, this.y, this.x + s, this.y);
         // RIGHT
-        this.line(this.x + s, this.y, this.x + s, this.y + s, this.walls[1]);
+        if(this.walls[1]) line(this.x + s, this.y, this.x + s, this.y + s);
         // BOTTOM
-        this.line(this.x + s, this.y + s, this.x, this.y + s, this.walls[2]);
+        if(this.walls[2]) line(this.x + s, this.y + s, this.x, this.y + s);
         // LEFT
-        this.line(this.x, this.y + s, this.x, this.y, this.walls[3]);
-    }
-
-    line(x1, y1, x2, y2, v) {
-        if(v) line(x1, y1, x2, y2);
+        if(this.walls[3]) line(this.x, this.y + s, this.x, this.y);
     }
 
     static getNeighbours(x, y) {
-        let first = grid[x][y - 1 < 0 ? rows - 1:y - 1];
-        let secound = grid[x + 1 > cols - 1 ? 0:x + 1][y];
-        let third = grid[x][y + 1 > rows - 1 ? 0:y + 1];
-        let fourth = grid[x - 1 < 0 ? cols - 1:x - 1][y];
-        return [first, secound, third, fourth];
+        let a = [];
+        if(y - 1 >= 0) a.push(grid[x][y - 1]);
+        if(x + 1 < cols) a.push(grid[x + 1][y]);
+        if(y + 1 < rows) a.push(grid[x][y + 1]);
+        if(x - 1 >= 0) a.push(grid[x - 1][y]);
+        
+        return a;
     }
 }
 
@@ -67,13 +65,25 @@ function createGrid(cols, rows) {
 }
 
 function chooseNeighbour() {
-    const r = Math.floor(Math.random() * 4);
-    switch (r) {
-        case value:
-            
-            break;
+    const r = Math.floor(Math.random() * current.neighbours.length);
+    const next = current.neighbours[r];
+    removeWalls(current, next);
+    next.visited = true;
     
-        default:
+    return r;
+}
+
+function removeWalls(current, next) {
+    current.walls[r] = false;
+    switch (r) {
+        case 0:
+            next.walls[3] = false;
+            break;
+        case 1:
+            next.walls[2] = false;
+            break;
+        case 2:
+            next.walls[3] = false;
             break;
     }
 }
