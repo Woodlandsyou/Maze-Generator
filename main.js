@@ -1,9 +1,9 @@
 const _width = 800;
 const cols = 35, s = _width / cols, rows =  Math.floor(cols * 0.7), _height = rows * s;
-let grid, current = null, k = false, stack = [], code = 1, next = null, dir = undefined;
+let grid, current = null, k = false, stack = [], code = 1;
 
 function setup() {
-        createCanvas(_width, _height);
+    createCanvas(_width, _height);
     grid = createGrid(cols, rows);
     current = grid[2][1];
 }
@@ -60,7 +60,7 @@ function createGrid(cols, rows) {
 function chooseNeighbour() {
     current.visited = true;
     const neighbours = getNeighbours(current);
-    next = getNeighbours(current)[Math.floor(Math.random() * getNeighbours(current).length)];
+    const next = getNeighbours(current)[Math.floor(Math.random() * getNeighbours(current).length)];
     if(!next) {
         if(current === grid[2][1]){
             alert('Finished😁');
@@ -71,7 +71,7 @@ function chooseNeighbour() {
     } else {
         stack.push(current);
 
-        dir = getDir(current, next);
+        const dir = getDir(current, next);
         current.walls[dir] = false;
         next.walls[getIndex(dir)] = false;
 
