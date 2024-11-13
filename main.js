@@ -82,7 +82,7 @@ function chooseNeighbour() {
 
 function getIndex(r) {
     if(typeof r !== 'number' || r < 0 || r > 3) throw new RangeError("r must be [0;3]");
-    else return Math.round(1.83712 * Math.sin(1.91063 * r + 0.275643) + 1.5);
+    else return (r + 2) % 4;
 }
 
 function getNeighbours(cell) {
